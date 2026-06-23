@@ -286,12 +286,16 @@ section {
   font-weight: 500;
   color: var(--fg);
   margin-bottom: 1rem;
+  max-width: 65ch;
+  text-wrap: balance;
 }
 
 .piece-body {
   font-size: clamp(.85rem, 1.1vw, .95rem);
   color: var(--fg-muted);
   line-height: 1.75;
+  max-width: 65ch;
+  text-wrap: pretty;
 }
 
 /* ===========================
@@ -627,12 +631,20 @@ section {
     gap: 2rem;
   }
 
+  /* Qui suis-je : empilé proprement, texte puis portrait, dans le flux */
   .about-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
   }
-
+  .about-text { order: 1; }
   .about-image {
-    aspect-ratio: 4/3;
+    order: 2;
+    aspect-ratio: 4/5;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    border-radius: 6px;
   }
 }
 
@@ -676,9 +688,6 @@ section {
   .clients-label { text-align: center; }
   .clients-list span { font-size: 1.25rem; white-space: nowrap; }
 
-  /* Portrait vidéo : ne pas manger tout l'écran */
-  .about-image { aspect-ratio: 4/3; max-height: 60vh; }
-
   #footer { flex-direction: column; align-items: flex-start; gap: .6rem; }
 }
   </style>
@@ -698,7 +707,7 @@ section {
     </video>
     <div class="hero-scrim"></div>
     <div class="hero-content">
-      <p class="hero-overtitle"><span class="lime">●</span> RÉALISATEUR IA · ÎLE-DE-FRANCE</p>
+      <p class="hero-overtitle"><span class="lime">●</span> RÉALISATEUR IA · MONTEUR VIDÉO</p>
       <h1 class="hero-title">Et si l'image n'avait plus de <span class="lime">limites</span>&nbsp;?</h1>
       <p class="hero-subtitle">L'émotion d'abord. <em>L'IA ensuite.</em></p>
       <a href="#travail" class="btn-primary">Voir le travail ↓</a>
@@ -708,9 +717,9 @@ section {
   <!-- LE TRAVAIL -->
   <section id="travail">
     <div class="section-intro">
-      <em>Pas de plateau. Pas de contrainte de budget. Juste l'intention, et ce qu'on ose imaginer.</em>
+      <em>Aucun plateau de tournage, aucune contrainte budgétaire. Seulement une intention, et tout ce qu'on peut oser imaginer.</em>
     </div>
-    <h2 class="section-title">Le travail<span class="lime">.</span></h2>
+    <h2 class="section-title">Mon travail<span class="lime">.</span></h2>
 
     <!-- Pièce 01 — Showreel (pleine largeur) -->
     <article class="piece piece--full">
@@ -721,7 +730,7 @@ section {
       <div class="piece-text">
         <p class="piece-overtitle">01 · Showreel</p>
         <h3 class="piece-title">Showreel</h3>
-        <p class="piece-accroche">Un aperçu de mon travail IA, tous formats et tous secteurs. Le geste de réalisateur d'abord, la technique ensuite.</p>
+        <p class="piece-accroche">Un florilège de mon travail en IA, tous formats et secteurs confondus. Le geste de réalisateur d'abord, la technique ensuite.</p>
       </div>
     </article>
 
@@ -734,8 +743,8 @@ section {
       <div class="piece-text">
         <p class="piece-overtitle">02 · Fiction publicitaire</p>
         <h3 class="piece-title">Volvo, Even Santa Wants It</h3>
-        <p class="piece-accroche">Fausse pub Volvo, conçue et réalisée 100&nbsp;% IA, de A à Z.</p>
-        <p class="piece-body">Grand Nord, aurores boréales, rennes, golden hour, une créature, des VFX, un twist final. J'ai voulu cocher toutes les cases d'un tournage qui coûterait des millions, et tout faire seul, sans plateau ni budget. Le vrai test n'est pas la prouesse technique&nbsp;: c'est que personne ne devine comment c'est fait.</p>
+        <p class="piece-accroche">Une fiction publicitaire Volvo, conçue et réalisée 100&nbsp;% IA, de A à Z.</p>
+        <p class="piece-body">Grand Nord, aurores boréales, rennes, golden hour, des effets spéciaux... Un film dont le tournage coûterait plusieurs millions, que j'ai réalisé tout seul. La vraie prouesse technique&nbsp;? Que personne ne devine que c'est de l'IA.</p>
       </div>
     </article>
 
@@ -748,15 +757,15 @@ section {
       <div class="piece-text">
         <p class="piece-overtitle">03 · Film d'ouverture</p>
         <h3 class="piece-title">Sage, Métamorphose</h3>
-        <p class="piece-accroche">Film d'ouverture, Partners Day à La Géode.</p>
-        <p class="piece-body">Un homme découvre un pouvoir&nbsp;: transformer sa Jaguar de série en bête de course, par étapes. La métaphore des produits Sage augmentés par l'IA. Quatre minutes de fiction où le vrai défi était la cohérence&nbsp;: même personnage, mêmes lieux, même voiture, plan après plan. Des angles impossibles, des effets qui auraient coûté des millions, pensés pour l'écran dôme de La Géode, où la moindre faiblesse d'image se voit.</p>
+        <p class="piece-accroche">Film d'ouverture, Événement Partners Day à La Géode.</p>
+        <p class="piece-body">Un homme découvre un pouvoir&nbsp;: transformer une ancienne Jaguar en bête de course moderne, par étapes. Une métaphore directe de ce que permet Sage. La vraie difficulté&nbsp;: garder une cohérence parfaite sur quatre minutes, pour un film pensé pour le dôme de La Géode, où chaque détail prend une nouvelle dimension.</p>
       </div>
     </article>
   </section>
 
   <!-- CE QUE J'APPORTE -->
   <section id="apporte">
-    <h2 class="section-title">Ce que j'apporte<span class="lime">.</span></h2>
+    <h2 class="section-title">Ma valeur ajoutée<span class="lime">.</span></h2>
     <div class="apporte-grid">
       <div class="apporte-item">
         <span class="apporte-num">01</span>
@@ -778,7 +787,7 @@ section {
 
   <!-- PREUVE -->
   <section id="clients">
-    <p class="clients-label">ILS TRAVAILLENT AVEC MOI</p>
+    <p class="clients-label">ILS M'ONT FAIT CONFIANCE</p>
     <div class="clients-list">
       <span>Bayer</span>
       <span class="clients-dot">·</span>
@@ -795,9 +804,9 @@ section {
         <video class="portrait-media" src="assets/portrait.mp4" autoplay muted loop playsinline poster="assets/portrait.jpg" aria-label="Flavien Javiony, réalisateur IA"></video>
       </div>
       <div class="about-text">
-        <h2 class="section-title">Qui je suis<span class="lime">.</span></h2>
-        <p>Monteur truquiste de formation, j'ai passé des années à faire vivre les images des autres en post-production, là où la créativité se niche dans les détails. Aujourd'hui, l'IA me rend le geste que j'avais mis de côté&nbsp;: réaliser. Diriger, éclairer, cadrer, raconter. Le reste, c'est une vie de cinéphile&nbsp;: des milliers de films vus, pas pour le score mais parce que ça finit par former un œil. Et ça se voit dans la façon dont je cadre.</p>
-        <p class="about-stat">Le goût d'un cinéphile, la vitesse de l'IA.</p>
+        <h2 class="section-title">Qui suis-je<span class="lime">.</span></h2>
+        <p>Monteur truquiste de formation, j'ai passé des années à faire vivre les images des autres en post-production, là où la créativité se niche dans les détails. Aujourd'hui, l'IA me rend le geste que j'avais mis de côté&nbsp;: réaliser. Diriger, éclairer, cadrer, raconter. Le reste, c'est une vie de cinéphile. Passionné par l'image, j'ai vu des milliers de films. Désormais, j'allie cette passion du cinéma aux prouesses de l'IA.</p>
+        <p class="about-stat">Le goût d'un cinéphile, la liberté de l'IA.</p>
       </div>
     </div>
   </section>
@@ -805,8 +814,8 @@ section {
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-inner">
-      <h2 class="section-title">Travaillons ensemble<span class="lime">.</span></h2>
-      <p class="contact-sub">Un projet, une idée, une collaboration. Écrivez-moi.</p>
+      <h2 class="section-title">Et si on travaillait ensemble&nbsp;<span class="lime">?</span></h2>
+      <p class="contact-sub">Un projet, une idée, une question, une collaboration&nbsp;? N'hésitez pas à m'écrire.</p>
       <form action="https://formspree.io/f/FORMSPREE_ID" method="POST" class="contact-form" id="contact-form">
         <div class="form-field">
           <label for="name">NOM</label>
@@ -829,7 +838,7 @@ section {
 
   <!-- FOOTER -->
   <footer id="footer">
-    <p>Flavien Javiony, Réalisateur IA · Paris © 2026</p>
+    <p>Flavien Javiony, Réalisateur IA © 2026</p>
     <a href="#" class="footer-top">Retour en haut ↑</a>
   </footer>
 
@@ -901,12 +910,27 @@ revealEls.forEach(el => io.observe(el));
 =========================== */
 const form = document.getElementById('contact-form');
 const successMsg = document.getElementById('form-success');
+const submitBtn = form.querySelector('.btn-submit');
+const submitLabel = submitBtn.textContent; // libellé d'origine ("Envoyer →")
+
+const resetBtn = () => {
+  submitBtn.disabled = false;
+  submitBtn.textContent = submitLabel;
+};
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
-  const btn = form.querySelector('.btn-submit');
-  btn.disabled = true;
-  btn.textContent = 'Envoi…';
+
+  // Garde-fou : tant que le vrai identifiant Formspree n'est pas branché,
+  // on évite un envoi voué à l'échec et on oriente vers l'email direct.
+  if (form.action.includes('FORMSPREE_ID')) {
+    alert("Le formulaire n'est pas encore activé. Écrivez-moi directement à flavien.javiony@gmail.com");
+    window.location.href = 'mailto:flavien.javiony@gmail.com';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Envoi…';
 
   try {
     const res = await fetch(form.action, {
@@ -917,16 +941,14 @@ form.addEventListener('submit', async e => {
     if (res.ok) {
       form.reset();
       successMsg.classList.add('visible');
-      btn.style.display = 'none';
+      submitBtn.style.display = 'none';
     } else {
-      btn.disabled = false;
-      btn.textContent = 'Envoyer →';
-      alert('Une erreur est survenue. Réessayez ou écrivez directement par email.');
+      resetBtn();
+      alert('Une erreur est survenue. Réessayez, ou écrivez-moi directement à flavien.javiony@gmail.com');
     }
   } catch {
-    btn.disabled = false;
-    btn.textContent = 'Envoyer →';
-    alert('Problème de connexion. Vérifiez votre réseau et réessayez.');
+    resetBtn();
+    alert('Problème de connexion. Réessayez, ou écrivez-moi directement à flavien.javiony@gmail.com');
   }
 });
   </script>
