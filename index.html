@@ -448,6 +448,12 @@ section {
 
 .contact-inner { max-width: 42rem; }
 
+/* Titre contact : tient sur une seule ligne en desktop */
+.section-title--contact { font-size: clamp(1.7rem, 3.3vw, 2.5rem); }
+@media (min-width: 700px) {
+  .section-title--contact { white-space: nowrap; }
+}
+
 .contact-sub {
   font-size: clamp(.9rem, 1.2vw, 1rem);
   color: var(--fg-muted);
@@ -827,7 +833,7 @@ section {
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-inner">
-      <h2 class="section-title">Et si on travaillait ensemble&nbsp;<span class="lime">?</span></h2>
+      <h2 class="section-title section-title--contact">Et si on travaillait ensemble&nbsp;<span class="lime">?</span></h2>
       <p class="contact-sub">Un projet, une idée, une question, une collaboration&nbsp;? N'hésitez pas à m'écrire.</p>
       <form action="https://formspree.io/f/xkolgjwd" method="POST" class="contact-form" id="contact-form">
         <div class="form-field">
