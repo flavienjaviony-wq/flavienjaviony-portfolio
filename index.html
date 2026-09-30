@@ -8,13 +8,13 @@
   <link rel="canonical" href="https://flavienjaviony.com/">
   <meta property="og:title" content="Flavien Javiony, Réalisateur IA">
   <meta property="og:description" content="L'émotion d'abord. L'IA ensuite.">
-  <meta property="og:image" content="https://flavienjaviony.com/assets/volvo-poster.jpg">
+  <meta property="og:image" content="https://flavienjaviony.com/assets/sage-poster.jpg">
   <meta property="og:url" content="https://flavienjaviony.com/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Flavien Javiony, Réalisateur IA">
   <meta name="twitter:description" content="L'émotion d'abord. L'IA ensuite.">
-  <meta name="twitter:image" content="https://flavienjaviony.com/assets/volvo-poster.jpg">
+  <meta name="twitter:image" content="https://flavienjaviony.com/assets/sage-poster.jpg">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +30,7 @@
   --fg: #E8E8E2;
   --fg-muted: #888880;
   --lime: #AAFF45;
+  --error: #FF8A7A;
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
   --gap: clamp(2.25rem, 5vw, 4.25rem);
@@ -48,6 +49,7 @@ body {
 }
 
 img { display: block; max-width: 100%; height: auto; }
+[hidden] { display: none !important; }
 a { color: inherit; text-decoration: none; }
 
 /* ===========================
@@ -183,6 +185,32 @@ a { color: inherit; text-decoration: none; }
   background: var(--lime);
   color: var(--bg);
 }
+button.btn-primary { background: transparent; cursor: pointer; }
+button.btn-primary:hover { background: var(--lime); }
+.btn-primary:focus-visible,
+.hero-link:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
+/* Hero : action principale + lien secondaire discret */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem 1.75rem;
+}
+.hero-link {
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  padding: .8rem 0;
+  transition: color .2s;
+}
+.hero-link:hover { color: var(--fg); }
+.hero-title em { font-weight: 400; white-space: nowrap; }
 
 /* ===========================
    SECTIONS · shared
@@ -244,6 +272,24 @@ section {
 }
 
 .piece-visual:hover img { transform: scale(1.03); }
+/* Vignette sans lecture : pas de zoom, rien ne suggère un clic */
+.piece-visual:has(.piece-status):hover img { transform: none; }
+
+/* Mention fixe à la place du bouton de lecture (même gabarit, sans accent lime) */
+.piece-status {
+  position: absolute;
+  bottom: 1rem; left: 1rem;
+  background: rgba(10,10,10,.75);
+  color: var(--fg-muted);
+  border: 1px solid rgba(232,232,226,.18);
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .55rem 1.1rem;
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
 
 .btn-play {
   position: absolute;
@@ -270,13 +316,15 @@ section {
   outline-offset: 2px;
 }
 
-.piece-overtitle {
-  font-size: .72rem;
-  font-weight: 500;
-  letter-spacing: .16em;
-  text-transform: uppercase;
+/* Fiche technique sous chaque film */
+.piece-specs {
+  margin-top: .85rem;
+  font-size: .78rem;
+  font-weight: 400;
+  letter-spacing: .04em;
+  line-height: 1.5;
   color: var(--fg-muted);
-  margin-bottom: .75rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .piece-title {
@@ -367,12 +415,20 @@ section {
 }
 
 .clients-label {
-  font-size: .65rem;
+  font-size: .6875rem; /* 11px minimum */
   font-weight: 500;
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--fg-muted);
   margin-bottom: 1.4rem;
+}
+
+/* Mention discrète sous la barre des clients */
+.clients-note {
+  margin-top: 1.4rem;
+  font-size: .78rem;
+  letter-spacing: .04em;
+  color: var(--fg-muted);
 }
 
 .clients-list {
@@ -472,7 +528,7 @@ section {
 .form-field { display: flex; flex-direction: column; gap: .45rem; }
 
 .form-field label {
-  font-size: .68rem;
+  font-size: .6875rem; /* 11px minimum */
   font-weight: 500;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -494,13 +550,21 @@ section {
 }
 
 .form-field input::placeholder,
-.form-field textarea::placeholder { color: rgba(136,136,128,.5); }
+.form-field textarea::placeholder { color: var(--fg-muted); }
 
 .form-field input:focus,
 .form-field textarea:focus {
   border-color: rgba(170,255,69,.45);
   background: rgba(170,255,69,.03);
 }
+/* Focus clavier bien visible sur les champs */
+.form-field input:focus-visible,
+.form-field textarea:focus-visible {
+  border-color: var(--lime);
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+.form-field [aria-invalid="true"]:focus-visible { outline-color: var(--error); }
 
 .btn-submit {
   align-self: flex-start;
@@ -520,13 +584,49 @@ section {
 .btn-submit:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
 .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
-.form-success {
-  display: none;
-  font-size: .88rem;
-  color: var(--lime);
-  padding: .8rem 0;
+/* Erreurs affichées sous chaque champ */
+.field-error,
+.form-error {
+  font-size: .8rem;
+  line-height: 1.5;
+  color: var(--error);
 }
-.form-success.visible { display: block; }
+.form-error a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.form-field [aria-invalid="true"] { border-color: rgba(255,138,122,.6); }
+.form-field [aria-invalid="true"]:focus { border-color: var(--error); background: rgba(255,138,122,.04); }
+
+/* Champ piège anti-spam : hors écran, jamais vu ni atteint au clavier */
+.form-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px; height: 1px;
+  overflow: hidden;
+}
+
+/* Confirmation qui remplace le formulaire après envoi */
+.form-done { padding: .4rem 0 .6rem; }
+.form-done-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  margin-bottom: .6rem;
+}
+.form-done-title:focus { outline: none; }
+.form-done-text {
+  font-size: .92rem;
+  color: var(--fg-muted);
+  margin-bottom: 1.6rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 
 .contact-email {
   margin-top: 1.6rem;
@@ -539,6 +639,19 @@ section {
   transition: border-color .2s;
 }
 .contact-email a:hover { border-color: var(--lime); }
+
+.contact-meta {
+  margin-top: .6rem;
+  font-size: .9rem;
+  color: var(--fg-muted);
+}
+.contact-meta a {
+  color: var(--lime);
+  border-bottom: 1px solid rgba(170,255,69,.35);
+  transition: border-color .2s;
+}
+.contact-meta a:hover { border-color: var(--lime); }
+.contact-sep { margin: 0 .5rem; color: rgba(170,255,69,.4); }
 
 /* ===========================
    FOOTER
@@ -557,7 +670,7 @@ section {
 
 #footer p {
   font-size: .75rem;
-  color: rgba(136,136,128,.55);
+  color: var(--fg-muted);
   letter-spacing: .04em;
 }
 
@@ -608,7 +721,11 @@ section {
   color: var(--fg-muted);
   font-size: 1.1rem;
   cursor: pointer;
-  padding: .4rem .6rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: color .2s;
 }
 .modal-close:hover { color: var(--lime); }
@@ -638,6 +755,9 @@ section {
 .reveal.visible {
   opacity: 1;
   transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
 }
 
 /* ===========================
@@ -702,6 +822,17 @@ section {
   section { padding: clamp(1.75rem, 6vw, 2.5rem) 0; }
 }
 
+/* Mobile (poster seul) : l'image remonte et s'estompe vers le bas,
+   pour que le texte du hero ne recouvre pas les lèvres */
+@media (max-width: 768px) {
+  .hero-bg {
+    height: 62%;
+    bottom: auto;
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+            mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  }
+}
+
 @media (max-width: 520px) {
   :root { --col: min(68rem, 100% - 2rem); }
 
@@ -710,7 +841,8 @@ section {
 
   /* Preuve : noms centrés, pas de coupure disgracieuse */
   .clients-list { gap: .7rem; justify-content: center; }
-  .clients-label { text-align: center; }
+  .clients-label,
+  .clients-note { text-align: center; }
   .clients-list span { font-size: 1.25rem; white-space: nowrap; }
 
   #footer { flex-direction: column; align-items: flex-start; gap: .6rem; }
@@ -727,33 +859,37 @@ section {
 
   <!-- HERO -->
   <section id="hero">
-    <video autoplay muted loop playsinline poster="assets/hero-poster.jpg" class="hero-bg">
-      <source src="assets/video-hero.mp4" type="video/mp4">
-    </video>
+    <!-- Vidéo chargée par le script : desktop uniquement, jamais si animations réduites ou économie de données -->
+    <video muted loop playsinline preload="none" poster="assets/hero-poster.webp" class="hero-bg" data-src="assets/video-hero.mp4"></video>
     <div class="hero-scrim"></div>
     <div class="hero-content">
-      <p class="hero-overtitle"><span class="lime">●</span> RÉALISATEUR IA · MONTEUR VIDÉO</p>
-      <h1 class="hero-title">Et si l'image n'avait plus de <span class="lime">limites</span>&nbsp;?</h1>
-      <p class="hero-subtitle">L'émotion d'abord. <em>L'IA ensuite.</em></p>
-      <a href="#travail" class="btn-primary">Voir le travail ↓</a>
+      <p class="hero-overtitle"><span class="lime">●</span> Réalisateur IA · Monteur vidéo</p>
+      <h1 class="hero-title">L'émotion d'abord. <em>L'IA ensuite</em><span class="lime">.</span></h1>
+      <p class="hero-subtitle">Réalisateur IA et monteur. Films institutionnels et publicitaires pour les agences et les grandes marques.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" data-vimeo-src="https://player.vimeo.com/video/1202658861?autoplay=1&title=0&byline=0&portrait=0&dnt=1">▶ Voir le showreel</button>
+        <a href="#travail" class="hero-link">Voir le travail ↓</a>
+      </div>
     </div>
   </section>
 
   <!-- LE TRAVAIL -->
   <section id="travail">
     <div class="section-intro">
-      <em>Aucun plateau de tournage, aucune contrainte budgétaire. Seulement une intention, et tout ce qu'on peut oser imaginer.</em>
+      <em>L'ampleur d'une grosse production, sans le plateau. Seulement une intention, et tout ce qu'on ose imaginer.</em>
     </div>
     <h2 class="section-title">Mon travail<span class="lime">.</span></h2>
 
     <!-- Pièce 01 · Showreel (pleine largeur) -->
     <article class="piece piece--full">
-      <div class="piece-visual">
-        <img src="assets/bandedemo-poster.jpg" alt="Showreel, aperçu du travail IA" loading="lazy">
-        <button class="btn-play" data-vimeo-src="https://player.vimeo.com/video/1202658861?autoplay=1&title=0&byline=0&portrait=0&dnt=1" aria-label="Lire le Showreel">▶ Lecture</button>
+      <div class="piece-media">
+        <div class="piece-visual">
+          <img src="assets/bandedemo-poster.webp" alt="Showreel, aperçu du travail IA" loading="lazy">
+          <button class="btn-play" data-vimeo-src="https://player.vimeo.com/video/1202658861?autoplay=1&title=0&byline=0&portrait=0&dnt=1" aria-label="Lire le Showreel">▶ Lecture</button>
+        </div>
+        <p class="piece-specs">1 min 04 · 16:9 · Réalisation et montage</p>
       </div>
       <div class="piece-text">
-        <p class="piece-overtitle">01 · Showreel</p>
         <h3 class="piece-title">Showreel</h3>
         <p class="piece-accroche piece-accroche--reel">Un florilège de mon travail en IA, tous formats et secteurs confondus.<br class="br-desktop"> Le geste de réalisateur d'abord, la technique ensuite.</p>
       </div>
@@ -761,12 +897,14 @@ section {
 
     <!-- Pièce 02 -->
     <article class="piece piece--normal">
-      <div class="piece-visual">
-        <img src="assets/volvo-poster.jpg" alt="Volvo, Even Santa Wants It, film publicitaire IA" loading="lazy">
-        <button class="btn-play" data-vimeo-src="https://player.vimeo.com/video/1202656020?h=170b49e089&autoplay=1&title=0&byline=0&portrait=0&dnt=1" aria-label="Lire Volvo, Even Santa Wants It">▶ Lecture</button>
+      <div class="piece-media">
+        <div class="piece-visual">
+          <img src="assets/volvo-poster.webp" alt="Volvo, Even Santa Wants It, film publicitaire IA" loading="lazy">
+          <button class="btn-play" data-vimeo-src="https://player.vimeo.com/video/1202656020?h=170b49e089&autoplay=1&title=0&byline=0&portrait=0&dnt=1" aria-label="Lire Volvo, Even Santa Wants It">▶ Lecture</button>
+        </div>
+        <p class="piece-specs">45 s · Scope 2.39 · Réalisation et montage · Film spéculatif, non commandé</p>
       </div>
       <div class="piece-text">
-        <p class="piece-overtitle">02 · Fiction publicitaire</p>
         <h3 class="piece-title">Volvo, Even Santa Wants It</h3>
         <p class="piece-accroche piece-accroche--tight">Une fiction publicitaire Volvo, conçue et réalisée 100&nbsp;% IA, de A à Z.</p>
         <p class="piece-body">Grand Nord, aurores boréales, rennes, golden hour, effets spéciaux... Un film dont le tournage coûterait plusieurs millions, que j'ai réalisé tout seul. La vraie prouesse technique&nbsp;? Que personne ne devine que c'est de l'IA.</p>
@@ -775,31 +913,53 @@ section {
 
     <!-- Pièce 02 -->
     <article class="piece piece--reverse">
-      <div class="piece-visual">
-        <img src="assets/sage-poster.jpg" alt="Sage, film d'ouverture La Géode" loading="lazy">
-        <button class="btn-play" data-vimeo-src="https://player.vimeo.com/video/1202656237?h=7741e1e33f&autoplay=1&title=0&byline=0&portrait=0&dnt=1" aria-label="Lire Sage, Métamorphose">▶ Lecture</button>
+      <div class="piece-media">
+        <div class="piece-visual">
+          <img src="assets/sage-poster.webp" alt="Sage, film d'ouverture La Géode" loading="lazy">
+          <button class="btn-play" data-vimeo-src="https://player.vimeo.com/video/1202656237?h=7741e1e33f&autoplay=1&title=0&byline=0&portrait=0&dnt=1" aria-label="Lire Sage, Métamorphose">▶ Lecture</button>
+        </div>
+        <p class="piece-specs">4 min 28 · 16:9 · Réalisation et montage · Diffusé à La Géode</p>
       </div>
       <div class="piece-text">
-        <p class="piece-overtitle">03 · Film évènementiel</p>
         <h3 class="piece-title">Sage, Métamorphose</h3>
         <p class="piece-accroche">Film évènementiel, Événement Partners Day à La Géode.</p>
         <p class="piece-body">Un homme découvre un pouvoir&nbsp;: transformer une ancienne Jaguar en bête de course moderne, par étapes. Une métaphore directe de ce que permet Sage. La vraie difficulté&nbsp;: garder une cohérence parfaite sur quatre minutes, pour un film pensé pour le dôme de La Géode, où chaque détail prend une nouvelle dimension.</p>
       </div>
     </article>
 
-    <!-- Pièce 04 · Vendesia (vignette seule, sans lightbox pour l'instant) -->
+    <!-- Pièce 04 · Vendesia
+         Lecture pilotée par data-vimeo ci-dessous (ex. https://vimeo.com/123456789 ou https://vimeo.com/123456789/abcdef1234).
+         Si data-vimeo est vide, la mention « Extrait visible sur demande » s'affiche à la place du bouton « ▶ Lecture ». -->
     <article class="piece piece--normal">
-      <div class="piece-visual">
-        <img src="assets/vendesia-poster.jpg" alt="Vendesia, installation muséale permanente en IA" loading="lazy">
-        <!-- Emplacement réservé pour un futur déclencheur de lecture Vimeo :
-        <button class="btn-play" data-vimeo-src="https://player.vimeo.com/video/VIMEO_ID_VENDESIA?autoplay=1&title=0&byline=0&portrait=0&dnt=1" aria-label="Lire Vendesia">▶ Lecture</button>
-        -->
+      <div class="piece-media">
+        <div class="piece-visual" data-vimeo="https://vimeo.com/1231582428/f714fea9ed" data-vimeo-label="Lire l'extrait Vendesia, découverte de la Vendée">
+          <img src="assets/vendesia-poster.webp" alt="Vendesia, installation muséale permanente en IA" loading="lazy">
+          <p class="piece-status">Extrait visible sur demande</p>
+        </div>
+        <p class="piece-specs">Extrait · 3 films, 30 min au total · 16:9 · Installation muséale · Réalisation et montage</p>
       </div>
       <div class="piece-text">
-        <p class="piece-overtitle">04 · Installation muséale</p>
         <h3 class="piece-title">Vendesia, découverte de la Vendée</h3>
         <p class="piece-accroche">Trois films pour une installation muséale permanente.</p>
-        <p class="piece-body">Une commande du musée immersif Vendesia&nbsp;: trois films, une demi-heure au total, qui font voyager le visiteur à travers la région, des chemins creux du bocage jusqu'aux tempêtes du large. Le récit est porté par deux voix, Marcel et Emma, que l'on entend sans jamais les voir. La vraie difficulté&nbsp;? Tenir trente minutes d'images à la fois belles et démonstratives, d'une fidélité absolue au terrain vendéen&nbsp;: sa géologie, sa nature, sa culture, jusqu'à la physique de ses phénomènes. Le tout réalisé en IA, pour une institution culturelle.</p>
+        <p class="piece-body">Une commande du musée immersif Vendesia&nbsp;: trois films, trente minutes au total, projetés dans ses installations. Du bocage aux tempêtes du large, deux voix, Marcel et Emma, guident le visiteur. La vraie difficulté&nbsp;? Une fidélité absolue au terrain vendéen, de sa géologie à sa culture. Le tout en IA.</p>
+      </div>
+    </article>
+
+    <!-- Pièce 05 · Alstom, InnoTrans 2026
+         Pas encore de vidéo : pour activer la lecture, coller le lien Vimeo dans data-vimeo ci-dessous
+         (ex. https://vimeo.com/123456789 ou https://vimeo.com/123456789/abcdef1234). -->
+    <article class="piece piece--reverse">
+      <div class="piece-media">
+        <div class="piece-visual" data-vimeo="" data-vimeo-label="Lire l'extrait Alstom, InnoTrans 2026">
+          <img src="assets/alstom-poster.webp" alt="Stand Alstom au salon InnoTrans de Berlin : une rame exposée et un grand écran d'accueil" loading="lazy">
+          <p class="piece-status">Extrait visible sur demande</p>
+        </div>
+        <p class="piece-specs">Films · Applications · Borne d'accueil · Réalisation IA</p>
+      </div>
+      <div class="piece-text">
+        <h3 class="piece-title">Alstom · InnoTrans 2026</h3>
+        <p class="piece-accroche">Un stand, plusieurs écritures, au salon InnoTrans de Berlin.</p>
+        <p class="piece-body">Pour le stand Alstom, j'ai participé aux films, aux applications et à la borne d'accueil. D'un côté, des trains photoréalistes fidèles au détail près. De l'autre, un univers de particules lumineuses, entre 3D et motion design. La vraie difficulté&nbsp;? Changer de registre sans jamais perdre la marque.</p>
       </div>
     </article>
   </section>
@@ -828,7 +988,7 @@ section {
 
   <!-- PREUVE -->
   <section id="clients">
-    <p class="clients-label">ILS M'ONT FAIT CONFIANCE</p>
+    <p class="clients-label">Ils m'ont fait confiance</p>
     <div class="clients-list">
       <span>Bayer</span>
       <span class="clients-dot">·</span>
@@ -839,14 +999,17 @@ section {
       <span>Sage</span>
       <span class="clients-dot">·</span>
       <span>Vendesia</span>
+      <span class="clients-dot">·</span>
+      <span>Thales</span>
     </div>
+    <p class="clients-note">Films sous confidentialité, visibles sur demande</p>
   </section>
 
   <!-- QUI JE SUIS -->
   <section id="about">
     <div class="about-grid">
       <div class="about-image">
-        <video class="portrait-media" src="assets/portrait.mp4" autoplay muted loop playsinline poster="assets/portrait.jpg" aria-label="Flavien Javiony, réalisateur IA"></video>
+        <video class="portrait-media" data-src="assets/portrait.mp4" muted loop playsinline preload="none" poster="assets/portrait.webp" aria-label="Flavien Javiony, réalisateur IA"></video>
       </div>
       <div class="about-text">
         <h2 class="section-title">Qui suis-je&nbsp;<span class="lime">?</span></h2>
@@ -860,24 +1023,42 @@ section {
   <section id="contact">
     <div class="contact-inner">
       <h2 class="section-title section-title--contact">Et si on travaillait ensemble&nbsp;<span class="lime">?</span></h2>
-      <p class="contact-sub">Un projet, une idée, une question, une collaboration&nbsp;? N'hésitez pas à m'écrire.</p>
-      <form action="https://formspree.io/f/xkolgjwd" method="POST" class="contact-form" id="contact-form">
+      <p class="contact-sub">Réponse sous 48&nbsp;h. Format, échéance, client final si possible.</p>
+      <form action="https://formspree.io/f/xkolgjwd" method="POST" class="contact-form" id="contact-form" novalidate>
         <div class="form-field">
-          <label for="name">NOM</label>
-          <input type="text" id="name" name="name" placeholder="Votre nom" required>
+          <label for="name">Nom</label>
+          <input type="text" id="name" name="name" placeholder="Votre nom" required autocomplete="name" aria-describedby="name-error">
+          <p class="field-error" id="name-error" hidden></p>
         </div>
         <div class="form-field">
-          <label for="email">EMAIL</label>
-          <input type="email" id="email" name="email" placeholder="vous@société.com" required>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="vous@société.com" required autocomplete="email" aria-describedby="email-error">
+          <p class="field-error" id="email-error" hidden></p>
         </div>
         <div class="form-field">
-          <label for="message">VOTRE PROJET</label>
-          <textarea id="message" name="message" placeholder="Quelques lignes sur ce que vous avez en tête." rows="5" required></textarea>
+          <label for="message">Votre projet</label>
+          <textarea id="message" name="message" placeholder="Quelques lignes sur ce que vous avez en tête." rows="5" required aria-describedby="message-error"></textarea>
+          <p class="field-error" id="message-error" hidden></p>
         </div>
+        <!-- Anti-spam : champ piège invisible (Formspree ignore les envois où _gotcha est rempli) -->
+        <div class="form-trap" aria-hidden="true">
+          <label for="gotcha">Ne pas remplir</label>
+          <input type="text" id="gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
         <button type="submit" class="btn-submit">Envoyer →</button>
-        <div class="form-success" id="form-success" aria-live="polite">Message envoyé, je vous réponds rapidement.</div>
       </form>
+      <div class="form-done" id="form-done" hidden>
+        <p class="form-done-title" tabindex="-1">Message envoyé<span class="lime">.</span></p>
+        <p class="form-done-text">Merci, je vous réponds sous 48&nbsp;h.</p>
+        <button type="button" class="btn-primary" id="form-again">Envoyer un autre message</button>
+      </div>
       <p class="contact-email">Ou écrivez-moi directement&nbsp;: <a href="mailto:flavien.javiony@gmail.com">flavien.javiony@gmail.com</a></p>
+      <p class="contact-meta">
+        <a href="https://www.linkedin.com/in/flavien-javiony-644a69b6" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> (nouvel onglet)</span></a>
+        <span class="contact-sep" aria-hidden="true">·</span>
+        <span>Île-de-France · missions partout en France</span>
+      </p>
     </div>
   </section>
 
@@ -891,10 +1072,13 @@ section {
   <div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Lecteur vidéo" hidden>
     <div class="modal-backdrop"></div>
     <div class="modal-inner">
-      <button class="modal-close" aria-label="Fermer">✕</button>
+      <!-- Sentinelles : gardent la touche Tab à l'intérieur de la fenêtre vidéo -->
+      <span class="focus-sentinel" tabindex="0" data-focus-to="last"></span>
+      <button class="modal-close" aria-label="Fermer la vidéo">✕</button>
       <div class="modal-player">
-        <iframe id="modal-iframe" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Film"></iframe>
+        <iframe id="modal-iframe" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Lecteur vidéo"></iframe>
       </div>
+      <span class="focus-sentinel" tabindex="0" data-focus-to="first"></span>
     </div>
   </div>
 
@@ -912,22 +1096,56 @@ onScroll();
 =========================== */
 const modal = document.getElementById('modal');
 const iframe = document.getElementById('modal-iframe');
+const modalClose = modal.querySelector('.modal-close');
+let modalOpener = null; // bouton qui a ouvert la fenêtre, pour y rendre le focus
+
+// Le reste de la page devient inerte pendant la lecture (ni clic ni Tab)
+const setPageInert = on => {
+  [...document.body.children].forEach(el => {
+    if (el !== modal && el.tagName !== 'SCRIPT') el.inert = on;
+  });
+};
+
 const closeModal = () => {
+  if (modal.hidden) return;
   modal.hidden = true;
   iframe.src = '';
   document.body.style.overflow = '';
+  setPageInert(false);
+  if (modalOpener) modalOpener.focus();
+  modalOpener = null;
 };
 
-document.querySelectorAll('.btn-play').forEach(btn => {
+// Tab bloqué dans la fenêtre : en sortant par un bord, on revient de l'autre côté
+modal.querySelectorAll('.focus-sentinel').forEach(s => {
+  s.addEventListener('focus', () => (s.dataset.focusTo === 'first' ? modalClose : iframe).focus());
+});
+
+// Vignettes en attente : si un lien Vimeo est renseigné dans data-vimeo,
+// on remplace la mention « Extrait visible sur demande » par un vrai bouton de lecture.
+document.querySelectorAll('.piece-visual[data-vimeo]').forEach(visual => {
+  const m = visual.dataset.vimeo.trim().match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([\da-f]+))?/i);
+  if (!m) return;
+  const btn = document.createElement('button');
+  btn.className = 'btn-play';
+  btn.textContent = '▶ Lecture';
+  btn.setAttribute('aria-label', visual.dataset.vimeoLabel || 'Lire la vidéo');
+  btn.dataset.vimeoSrc = `https://player.vimeo.com/video/${m[1]}?${m[2] ? `h=${m[2]}&` : ''}autoplay=1&title=0&byline=0&portrait=0&dnt=1`;
+  visual.querySelector('.piece-status')?.replaceWith(btn);
+});
+
+document.querySelectorAll('button[data-vimeo-src]').forEach(btn => {
   btn.addEventListener('click', () => {
+    modalOpener = btn;
     iframe.src = btn.dataset.vimeoSrc;
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
-    document.querySelector('.modal-close').focus();
+    setPageInert(true);
+    modalClose.focus();
   });
 });
 
-document.querySelector('.modal-close').addEventListener('click', closeModal);
+modalClose.addEventListener('click', closeModal);
 document.querySelector('.modal-backdrop').addEventListener('click', closeModal);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
@@ -951,32 +1169,96 @@ const io = new IntersectionObserver((entries) => {
 revealEls.forEach(el => io.observe(el));
 
 /* ===========================
+   VIDÉOS · chargement différé
+=========================== */
+// Animations réduites ou économie de données : on garde les images fixes (posters).
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const saveData = navigator.connection && navigator.connection.saveData;
+const loadVideo = v => {
+  if (!v.src) v.src = v.dataset.src;
+  v.play().catch(() => {});
+};
+
+// Hero : vidéo sur desktop uniquement, poster seul sur mobile.
+const heroVideo = document.querySelector('.hero-bg');
+if (!reduceMotion && !saveData && matchMedia('(min-width: 769px)').matches) loadVideo(heroVideo);
+
+// Portrait : chargé seulement à l'approche de l'écran, en pause hors écran.
+const portraitVideo = document.querySelector('.portrait-media');
+if (!reduceMotion && !saveData) {
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) loadVideo(portraitVideo);
+    else if (portraitVideo.src) portraitVideo.pause();
+  }, { rootMargin: '200px 0px' }).observe(portraitVideo);
+}
+
+/* ===========================
    CONTACT FORM · Formspree AJAX
 =========================== */
 const form = document.getElementById('contact-form');
-const successMsg = document.getElementById('form-success');
 const submitBtn = form.querySelector('.btn-submit');
 const submitLabel = submitBtn.textContent; // libellé d'origine ("Envoyer →")
+const formError = document.getElementById('form-error');
+const formDone = document.getElementById('form-done');
+const EMAIL_FALLBACK = '<a href="mailto:flavien.javiony@gmail.com">flavien.javiony@gmail.com</a>';
 
-const resetBtn = () => {
-  submitBtn.disabled = false;
-  submitBtn.textContent = submitLabel;
+// Règles de validation : un message clair par champ
+const rules = {
+  name: v => v ? '' : 'Indiquez votre nom.',
+  email: v => !v ? 'Indiquez votre email pour que je puisse vous répondre.'
+    : /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : 'Cet email semble incomplet. Exemple : nom@agence.fr',
+  message: v => v ? '' : 'Dites-moi en quelques lignes ce que vous avez en tête.'
+};
+
+const showFieldError = (field, msg) => {
+  const err = document.getElementById(`${field.id}-error`);
+  err.textContent = msg;
+  err.hidden = !msg;
+  if (msg) field.setAttribute('aria-invalid', 'true');
+  else field.removeAttribute('aria-invalid');
+};
+
+const validate = field => {
+  const msg = rules[field.name](field.value.trim());
+  showFieldError(field, msg);
+  return !msg;
+};
+
+// Une fois signalé, un champ se revalide pendant la saisie
+Object.keys(rules).forEach(name => {
+  const field = form.elements[name];
+  field.addEventListener('input', () => { if (field.hasAttribute('aria-invalid')) validate(field); });
+  field.addEventListener('blur', () => { if (field.value.trim()) validate(field); });
+});
+
+const setSending = sending => {
+  submitBtn.disabled = sending;
+  submitBtn.textContent = sending ? 'Envoi…' : submitLabel;
+};
+
+const showFormError = html => {
+  formError.innerHTML = html;
+  formError.hidden = !html;
+};
+
+const showDone = () => {
+  form.hidden = true;
+  formDone.hidden = false;
+  formDone.querySelector('.form-done-title').focus();
 };
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
+  showFormError('');
 
-  // Garde-fou : tant que le vrai identifiant Formspree n'est pas branché,
-  // on évite un envoi voué à l'échec et on oriente vers l'email direct.
-  if (form.action.includes('FORMSPREE_ID')) {
-    alert("Le formulaire n'est pas encore activé. Écrivez-moi directement à flavien.javiony@gmail.com");
-    window.location.href = 'mailto:flavien.javiony@gmail.com';
-    return;
-  }
+  const fields = Object.keys(rules).map(name => form.elements[name]);
+  const invalid = fields.filter(f => !validate(f));
+  if (invalid.length) { invalid[0].focus(); return; }
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Envoi…';
+  // Champ piège rempli : c'est un robot. On simule un succès sans rien envoyer.
+  if (form.elements._gotcha.value) { form.reset(); showDone(); return; }
 
+  setSending(true);
   try {
     const res = await fetch(form.action, {
       method: 'POST',
@@ -985,16 +1267,21 @@ form.addEventListener('submit', async e => {
     });
     if (res.ok) {
       form.reset();
-      successMsg.classList.add('visible');
-      submitBtn.style.display = 'none';
+      showDone();
     } else {
-      resetBtn();
-      alert('Une erreur est survenue. Réessayez, ou écrivez-moi directement à flavien.javiony@gmail.com');
+      showFormError(`L'envoi n'a pas abouti. Réessayez dans un instant, ou écrivez-moi directement à ${EMAIL_FALLBACK}.`);
     }
   } catch {
-    resetBtn();
-    alert('Problème de connexion. Réessayez, ou écrivez-moi directement à flavien.javiony@gmail.com');
+    showFormError(`Problème de connexion : le message n'est pas parti. Vérifiez votre réseau et réessayez, ou écrivez-moi à ${EMAIL_FALLBACK}.`);
+  } finally {
+    setSending(false);
   }
+});
+
+document.getElementById('form-again').addEventListener('click', () => {
+  formDone.hidden = true;
+  form.hidden = false;
+  form.elements.name.focus();
 });
   </script>
 </body>
